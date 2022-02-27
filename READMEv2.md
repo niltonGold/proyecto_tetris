@@ -1,3 +1,3 @@
 # proyecto_tetris
 
-version 1
+version 2

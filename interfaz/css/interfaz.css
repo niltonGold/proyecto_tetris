@@ -69,6 +69,11 @@ body{
 
         }
 
+        /* Ultima linea del tablero invisible */
+        .final_line{
+            visibility: hidden;
+        }
+
 /* Estilo y colores del los bloques del tablero grande y el pequeño*/
 .bloque__contenedor, .bloque__contenedor_mini{
     display: flex;
