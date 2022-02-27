@@ -18,7 +18,7 @@ let tetrisMusic = document.getElementById("tetrisMusic");
 function togglePlay() {
     return tetrisMusic.paused ? tetrisMusic.play() : tetrisMusic.pause();
 };
-tetrisMusic.volume = 0.2;
+tetrisMusic.volume = 0.1;
 tetrisMusic.loop = true;
 
 
@@ -201,7 +201,6 @@ let rotacionActualTetrominio = 0;
 
 // ROTACION ALEATORIA DEL TETROMINIO
 let random = Math.floor( Math.random() * tetrominiosArray.length );
-// let forma_del_tetrominio_elegido = tetrominiosArray[random][rotacionActualTetrominio];
 let forma_del_tetrominio_elegido = tetrominiosArray[random][rotacionActualTetrominio];
 
 // DIBUJAR EL TETROMINIO EN EL TABLERO
@@ -242,8 +241,9 @@ function generateTetrominioBloqueado(){
         forma_del_tetrominio_elegido = tetrominiosArray[random][rotacionActualTetrominio];
         posicionActual_en_tablero = 4;
 
-        // const audioLand = new Audio("./music/samples_land.mp3");
-        // audioLand.play();
+        const audioLand = new Audio("./music/samples_land.mp3");
+        audioLand.play();
+        audioLand .volume = 0.2;
 
         draw();
 
@@ -259,27 +259,27 @@ function generateTetrominioBloqueado(){
 function controles(tecla){
         if (tecla.keyCode === 37){
             moveLetf(); // izquierda
-            // const audioMove = new Audio("./music/samples_move.mp3");
-            // audioMove.volume = 0.4;
-            // audioMove.play();
+            const audioMove = new Audio("./music/samples_move.mp3");
+            audioMove.volume = 0.2;
+            audioMove.play();
 
     }else if (tecla.keyCode === 38) {
             rotar(); // arriba
-            // const audioRotate = new Audio("./music/samples_rotate.mp3");
-            // audioRotate.volume = 0.4;
-            // audioRotate.play();
+            const audioRotate = new Audio("./music/samples_rotate.mp3");
+            audioRotate.volume = 0.2;
+            audioRotate.play();
 
     }else if (tecla.keyCode === 39) {
             moveRight(); //derecha
-            // const audioMove = new Audio("./music/samples_move.mp3");
-            // audioMove.volume = 0.4;
-            // audioMove.play();
+            const audioMove = new Audio("./music/samples_move.mp3");
+            audioMove.volume = 0.2;
+            audioMove.play();
 
     }else if (tecla.keyCode === 40) {
             moveDown(); // abajo
-            // const audioMove = new Audio("./music/samples_move.mp3");
-            // audioMove.volume = 0.4;
-            // audioMove.play();
+            const audioMove = new Audio("./music/samples_move.mp3");
+            audioMove.volume = 0.2;
+            audioMove.play();
            
     }
 }
@@ -370,157 +370,435 @@ function preventDefaultForScrollKeys(e) {
 
 
 
-        // tetrominios especiales
-            // tetrominio I rotacion 2 y 4 
-            let tetrominio_I_r2_y_r_3 = tetrominiosArray[0][1];
-            let tetrominio_I_r2_y_r_3_x = tetrominiosArray[0][3];
-
-            // tetrominio L rotacion 2
-            let tetrominio_L_r2 = tetrominiosArray[1][1];
-
-
-            // tetrominio L rotacion 4
-            let tetrominio_L_r4 = tetrominiosArray[1][3];
-
-            let te = tetrominiosArray[0][1];
-
-
+     
 
         // TETROMINIO I ROTACIONES PROHIBIDAS
-            // constante que me indica si el tetrominio I rotacion 2 o 4 esta a 1 columa de distancia del borde derecho
-            const bordeDer2_tetrominio_I = forma_del_tetrominio_elegido.some( b => ( ( (posicionActual_en_tablero+1) + b) % (BOARD_WIDTH) ) === ( BOARD_WIDTH - 1 ) );
+
+            // Tetrominio I Rotaciones al borde
+                //constante que me indica si el tetrominio I rotacion 2 o 4 esta a 1 columa de distancia del borde derecho
+                const bordeDer2_tetrominio_I = forma_del_tetrominio_elegido.some( b => ( ( (posicionActual_en_tablero+1) + b) % (BOARD_WIDTH) ) === ( BOARD_WIDTH - 1 ) );
+
+                if ( (arrayARotar == tetrominiosArray[0][1]) || (arrayARotar === tetrominiosArray[0][3]) ){
+                         
+                    // tetrominio I rotacion 2 y 3 y pegado a la izquierda, no puede rotar  
+                    if ( (bordeIz)  ){
+                        pasaYRota = false;
+                    }
+    
+                    // tetrominio I rotacion 2 y 3 y pegado a la derecha, no puede rotar    
+                    if ( (bordeDer) ){
+                        pasaYRota = false;
+                    }
+    
+                    // tetrominio I rotacion 2 y 3 y a una columna de distancia del borde derecho, no puede rotar
+                    if ( (bordeDer2_tetrominio_I)  ){
+                        pasaYRota = false;
+                    }
+                }
+
+            // Tetrominio I Rotaciones cerca de otros tetrominios
+
+                // Tetrominio I Rotacion 1 y 3
+                    let bloque1_prohibido_para_tetrominio_I_R1_R3 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH*2)+1].classList.contains('bloque_bloqueado');
+                    let bloque2_prohibido_para_tetrominio_I_R1_R3 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH*3)+1].classList.contains('bloque_bloqueado');
+                      
+                    if ( (arrayARotar === tetrominiosArray[0][0]) || (arrayARotar === tetrominiosArray[0][2])){
+                        
+                        if(bloque1_prohibido_para_tetrominio_I_R1_R3){
+                            pasaYRota = false;
+                        }
+
+                        if(bloque2_prohibido_para_tetrominio_I_R1_R3){
+                            pasaYRota = false;
+                        }
+
+                        if(bloque1_prohibido_para_tetrominio_I_R1_R3 && bloque2_prohibido_para_tetrominio_I_R1_R3){
+                            pasaYRota = false;
+                        }
+                    
+                    }
+
+                // Tetrominio I Rotacion 2 y 4
+                    let bloque1_prohibido_para_tetrominio_I_R2_R4 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH)].classList.contains('bloque_bloqueado');
+                    let bloque2_prohibido_para_tetrominio_I_R2_R4 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH+2)].classList.contains('bloque_bloqueado');
+                    let bloque3_prohibido_para_tetrominio_I_R2_R4 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH+3)].classList.contains('bloque_bloqueado');
+
+                    if ( (arrayARotar === tetrominiosArray[0][1]) || (arrayARotar === tetrominiosArray[0][3])){
+                        
+                        if(bloque1_prohibido_para_tetrominio_I_R2_R4){
+                            pasaYRota = false;
+                        }
+
+                        if(bloque2_prohibido_para_tetrominio_I_R2_R4){
+                            pasaYRota = false;
+                        }
+
+                        if(bloque3_prohibido_para_tetrominio_I_R2_R4){
+                            pasaYRota = false;
+                        }
+                    
+                    }
 
 
         // TETROMINIO L ROTACIONES PROHIBIDAS
 
+                // Tetrominio L Rotaciones al borde
+                    // Tetrominio L Rotacion 2 y 4
+                        if (  (arrayARotar === tetrominiosArray[1][1]) || (arrayARotar === tetrominiosArray[1][3]) ) {
+                            if ( bordeDer ) {
+                                pasaYRota = false;
+                            }
+                        }
+
+
+                // Tetrominio L Rotaciones cerca de otros tetrominios
+                    // tetrominio L rotacion 1
+                        let bloque1_prohibido_para_tetrominio_L_R1 = boardArray[(posicionActual_en_tablero)].classList.contains('bloque_bloqueado');
+                        let bloque2_prohibido_para_tetrominio_L_R1 = boardArray[(posicionActual_en_tablero + 1)].classList.contains('bloque_bloqueado');
+                        let bloque3_prohibido_para_tetrominio_L_R1 = boardArray[(posicionActual_en_tablero) + (BOARD_WIDTH*2+1)].classList.contains('bloque_bloqueado');
+                        
+                        if ( (arrayARotar === tetrominiosArray[1][0]))
+                        {
+                        
+                            if(bloque1_prohibido_para_tetrominio_L_R1){
+                                pasaYRota = false;
+                            }
+    
+                            if(bloque2_prohibido_para_tetrominio_L_R1){
+                                pasaYRota = false;
+                            }
+    
+                            if(bloque3_prohibido_para_tetrominio_L_R1){
+                                pasaYRota = false;
+                            }
+                        
+                        }
+
+
+                    // tetrominio L rotacion 2
+                        let bloque1_prohibido_para_tetrominio_L_R2 = boardArray[(posicionActual_en_tablero+2)].classList.contains('bloque_bloqueado');
+                        let bloque2_prohibido_para_tetrominio_L_R2 = boardArray[(posicionActual_en_tablero) + (BOARD_WIDTH+2)].classList.contains('bloque_bloqueado');
+                        let bloque3_prohibido_para_tetrominio_L_R2 = boardArray[(posicionActual_en_tablero) + (BOARD_WIDTH*2+2)].classList.contains('bloque_bloqueado');
+                        
+                        if ( (arrayARotar === tetrominiosArray[1][1]))
+                        {
+                        
+                            if(bloque1_prohibido_para_tetrominio_L_R2){
+                                pasaYRota = false;
+                            }
+    
+                            if(bloque2_prohibido_para_tetrominio_L_R2){
+                                pasaYRota = false;
+                            }
+    
+                            if(bloque3_prohibido_para_tetrominio_L_R2 ){
+                                pasaYRota = false;
+                            }
+                        
+                        }
+                    
+                    
+                    // tetrominio L rotacion 3
+                        let bloque1_prohibido_para_tetrominio_L_R3 = boardArray[(posicionActual_en_tablero)].classList.contains('bloque_bloqueado');
+                        let bloque2_prohibido_para_tetrominio_L_R3 = boardArray[(posicionActual_en_tablero) + (BOARD_WIDTH)].classList.contains('bloque_bloqueado');
+                        
+                        if ( (arrayARotar === tetrominiosArray[1][2]))
+                        {
+                        
+                            if(bloque1_prohibido_para_tetrominio_L_R3){
+                                pasaYRota = false;
+                            }
+    
+                            if(bloque2_prohibido_para_tetrominio_L_R3){
+                                pasaYRota = false;
+                            }
+                        
+                        }
+                    
+                    
+                    
+                    // tetrominio L rotacion 4
+                        let bloque1_prohibido_para_tetrominio_L_R4 = boardArray[(posicionActual_en_tablero) + (BOARD_WIDTH+1)].classList.contains('bloque_bloqueado');
+                        let bloque2_prohibido_para_tetrominio_L_R4 = boardArray[(posicionActual_en_tablero) + (BOARD_WIDTH+2)].classList.contains('bloque_bloqueado');
+                        
+                        if ( (arrayARotar === tetrominiosArray[1][3]))
+                        {
+                        
+                            if(bloque1_prohibido_para_tetrominio_L_R4){
+                                pasaYRota = false;
+                            }
+    
+                            if(bloque2_prohibido_para_tetrominio_L_R4){
+                                pasaYRota = false;
+                            }
+                        
+                        }
 
 
         // TETROMINIO S ROTACIONES PROHIBIDAS
+        
+                // Tetrominio S Rotaciones 2 y 4 al borde
+                    if (  (arrayARotar === tetrominiosArray[2][1]) || (arrayARotar === tetrominiosArray[2][3]) ) {
+                        if ( bordeDer ) {
+                            pasaYRota = false;
+                        }
+                    }
 
+                    
+                // Tetrominio S Roaciones cerca de otros tetrominios
+                    // Tetrominio S Rotacion 1 y 3
+                    let bloque1_prohibido_para_tetrominio_S_R1_R3 = boardArray[(posicionActual_en_tablero)].classList.contains('bloque_bloqueado');
+                    let bloque2_prohibido_para_tetrominio_S_R1_R3 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH)].classList.contains('bloque_bloqueado');
+                    
+                    if ( (arrayARotar === tetrominiosArray[2][0]) || (arrayARotar === tetrominiosArray[2][2])){
+                        
+                        if(bloque1_prohibido_para_tetrominio_S_R1_R3){
+                            pasaYRota = false;
+                        }
+
+                        if(bloque2_prohibido_para_tetrominio_S_R1_R3){
+                            pasaYRota = false;
+                        }
+
+                    }
+
+                    // Tetrominio S Rotacion 2 y 4
+                    let bloque1_prohibido_para_tetrominio_S_R2_R4 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH*2)].classList.contains('bloque_bloqueado');
+                    let bloque2_prohibido_para_tetrominio_S_R2_R4 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH+2)].classList.contains('bloque_bloqueado');
+
+                    if ( (arrayARotar === tetrominiosArray[2][1]) || (arrayARotar === tetrominiosArray[2][3])){
+                        
+                        if(bloque1_prohibido_para_tetrominio_S_R2_R4){
+                            pasaYRota = false;
+                        }
+
+                        if(bloque2_prohibido_para_tetrominio_S_R2_R4){
+                            pasaYRota = false;
+                        }
+
+                    }
 
 
         // TETROMINIO Z ROTACIONES PROHIBIDAS
+        
+                // Tetrominio Z Rotaciones 2 y 4 al borde
+                if (  (arrayARotar === tetrominiosArray[3][1]) || (arrayARotar === tetrominiosArray[3][3]) ) {
+                    if ( bordeIz ) {
+                        pasaYRota = false;
+                    }
+                }
+                    
+
+                // Tetrominio Z Rotaciones cerca de otros tetrominios
+                    // Tetrominio Z Rotacion 1 y 3
+                    let bloque1_prohibido_para_tetrominio_Z_R1_R3 = boardArray[(posicionActual_en_tablero+2)].classList.contains('bloque_bloqueado');
+                    let bloque2_prohibido_para_tetrominio_Z_R1_R3 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH+2)].classList.contains('bloque_bloqueado');
+
+                    if ( (arrayARotar === tetrominiosArray[3][0]) || (arrayARotar === tetrominiosArray[3][2])){
+                        
+                        if(bloque1_prohibido_para_tetrominio_Z_R1_R3){
+                            pasaYRota = false;
+                        }
+
+                        if(bloque2_prohibido_para_tetrominio_Z_R1_R3){
+                            pasaYRota = false;
+                        }
+
+                    }
+
+                    // Tetrominio Z Rotacion 2 y 4
+                    let bloque1_prohibido_para_tetrominio_Z_R2_R4 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH)].classList.contains('bloque_bloqueado');
+                    let bloque2_prohibido_para_tetrominio_Z_R2_R4 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH*2+2)].classList.contains('bloque_bloqueado');
+
+                    if ( (arrayARotar === tetrominiosArray[3][1]) || (arrayARotar === tetrominiosArray[3][3])){
+                        
+                        if(bloque1_prohibido_para_tetrominio_Z_R2_R4){
+                            pasaYRota = false;
+                        }
+
+                        if(bloque2_prohibido_para_tetrominio_Z_R2_R4){
+                            pasaYRota = false;
+                        }
+
+                    }
 
 
 
         // TETROMINIO J ROTACIONES PROHIBIDAS
-
-
-
-        // TETROMINIO O ROTACIONES PROHIBIDAS
-
-
-
-        // TETROMINIO T ROTACIONES PROHIBIDAS    
-    
-
-
-
-
-
-
         
-
-
-        
-
-
-        // TETROMINIO I ROTACIONES PROHIBIDAS
-                // Tetrominio I Rotaciones al borde
-
-                // Tetrominio I Rotaciones cerca de otros tetrominios
-
-                // tetrominio I
-
-
-
-
-
-
-
-                let bloque1_prohibido_para_tetro_I = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH*2)+1].classList.contains('bloque_bloqueado');
-                let bloque2_prohibido_para_tetro_I = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH*3)+1].classList.contains('bloque_bloqueado');
-
-
-                if ( (arrayARotar == tetrominio_I_r2_y_r_3) || (arrayARotar === tetrominio_I_r2_y_r_3_x) ){
-
-               
-
-
-                if ( (bordeIz)  ){
-                    pasaYRota = false;
-                }
-
-                // tetrominio I rotacion 2 y 3 y pegado a la derecha, no puede rotas    
-                if ( (bordeDer) ){
-                    pasaYRota = false;
-                }
-
-                // tetrominio I rotacion 2 y 3 y a una columna de distancia del borde derecho, no puede rotar
-                if ( (bordeDer2_tetrominio_I)  ){
-                    pasaYRota = false;
-                }
-
-            }
-
-
-        
-        
-                
-                if ( (arrayARotar === tetrominiosArray[0][0]) || (arrayARotar === tetrominiosArray[0][2])){
-                 
-                
-                    if(bloque1_prohibido_para_tetro_I){
-                        pasaYRota = false;
+                // Tetrominio J Rotaciones 2 y 4 al borde
+                    if (  (arrayARotar === tetrominiosArray[4][1])  ) {
+                        if ( bordeDer ) {
+                            pasaYRota = false;
+                        }
                     }
 
-                    if(bloque2_prohibido_para_tetro_I){
-                        pasaYRota = false;
+                    if (  (arrayARotar === tetrominiosArray[4][3])  ) {
+                        if ( bordeIz ) {
+                            pasaYRota = false;
+                        }
                     }
+                // Tetrominio J Rotaciones cerca de otros tetrominios
+                    // Tetrominio J Rotacion 1
+                    let bloque1_prohibido_para_tetrominio_J_R1 = boardArray[(posicionActual_en_tablero+1)].classList.contains('bloque_bloqueado');
+                    let bloque2_prohibido_para_tetrominio_J_R1 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH*2)].classList.contains('bloque_bloqueado');
+                    let bloque3_prohibido_para_tetrominio_J_R1 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH*2+1)].classList.contains('bloque_bloqueado');
 
-                    
-
-                    if(bloque1_prohibido_para_tetro_I && bloque2_prohibido_para_tetro_I){
-                        pasaYRota = false;
-                    }
-                 
-                }
-                
-
-
-
-
-        // TETROMINIO L ROTACIONES QUE NO PUEDEN ROTAR AL BORDE
-                
-                // tetrominio L rotacion 2 y pegado a la derecha, no puede rotar
-                if ( (bordeDer) && (arrayARotar === tetrominio_L_r2) ){
-                    pasaYRota = false;
-                }
-                
-                // tetrominio L rotacion 3 y pegado a la derecha, no puede rotar
-                if ( (bordeDer) && (arrayARotar === tetrominio_L_r4) ){
-                    pasaYRota = false;
-                }
-                
-
-
-
-        console.log(pasaYRota);
-        
-        if (pasaYRota){
-                        undraw();
+                    if ( (arrayARotar === tetrominiosArray[4][0])  ){
                         
-                        rotacionActualTetrominio++;// aqui eligo la siguiente forma del array de tetrominios
-
-                        // console.log(rotacionActualTetrominio);
-                        if(rotacionActualTetrominio === 4){ //si la rotacion llega a 4, vuelve a 0
-                            rotacionActualTetrominio = 0;
+                        if(bloque1_prohibido_para_tetrominio_J_R1){
+                            pasaYRota = false;
                         }
 
-                        forma_del_tetrominio_elegido = tetrominiosArray[random][rotacionActualTetrominio];
-                        
-                        draw();
+                        if(bloque2_prohibido_para_tetrominio_J_R1){
+                            pasaYRota = false;
+                        }
+
+                        if(bloque3_prohibido_para_tetrominio_J_R1){
+                            pasaYRota = false;
+                        }
+
                     }
+
+                    // Tetrominio J Rotacion 2
+                    let bloque1_prohibido_para_tetrominio_J_R2 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH)].classList.contains('bloque_bloqueado');
+                    let bloque2_prohibido_para_tetrominio_J_R2 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH*2+2)].classList.contains('bloque_bloqueado');
+
+                    if ( (arrayARotar === tetrominiosArray[4][1]) ){
+                        
+                        if(bloque1_prohibido_para_tetrominio_J_R2){
+                            pasaYRota = false;
+                        }
+
+                        if(bloque2_prohibido_para_tetrominio_J_R2){
+                            pasaYRota = false;
+                        }
+
+                    }
+
+                    // Tetrominio J Rotacion 3
+                    let bloque1_prohibido_para_tetrominio_J_R3 = boardArray[(posicionActual_en_tablero+1)].classList.contains('bloque_bloqueado');
+                    let bloque2_prohibido_para_tetrominio_J_R3 = boardArray[(posicionActual_en_tablero+2)].classList.contains('bloque_bloqueado');
+                    let bloque3_prohibido_para_tetrominio_J_R3 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH+1)].classList.contains('bloque_bloqueado');
+
+                    if ( (arrayARotar === tetrominiosArray[4][2]) ){
+                        
+                        if(bloque1_prohibido_para_tetrominio_J_R3){
+                            pasaYRota = false;
+                        }
+
+                        if(bloque2_prohibido_para_tetrominio_J_R3){
+                            pasaYRota = false;
+                        }
+
+                        if(bloque3_prohibido_para_tetrominio_J_R3){
+                            pasaYRota = false;
+                        }
+
+                    }
+
+                    // Tetrominio J Rotacion 4
+                    let bloque1_prohibido_para_tetrominio_J_R4 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH)].classList.contains('bloque_bloqueado');
+                    let bloque2_prohibido_para_tetrominio_J_R4 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH+2)].classList.contains('bloque_bloqueado');
+                    let bloque3_prohibido_para_tetrominio_J_R4 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH*2+2)].classList.contains('bloque_bloqueado');
+
+                    if ( (arrayARotar === tetrominiosArray[4][3]) ){
+                        
+                        if(bloque1_prohibido_para_tetrominio_J_R4){
+                            pasaYRota = false;
+                        }
+
+                        if(bloque2_prohibido_para_tetrominio_J_R4){
+                            pasaYRota = false;
+                        }
+
+                        if(bloque3_prohibido_para_tetrominio_J_R4){
+                            pasaYRota = false;
+                        }
+
+                    }
+
+        // TETROMINIO O ROTACIONES PROHIBIDAS
+        
+                
+
+
+
+        // TETROMINIO T ROTACIONES PROHIBIDAS 
+        
+                // Tetrominio T Rotaciones al borde
+                    if (  (arrayARotar === tetrominiosArray[6][1])  ) {
+                        if ( bordeDer ) {
+                            pasaYRota = false;
+                        }
+                    }
+
+                    if (  (arrayARotar === tetrominiosArray[6][3])  ) {
+                        if ( bordeIz ) {
+                            pasaYRota = false;
+                        }
+                    }
+                // Tetrominio T Rotaciones cerca de otros tetrominios   
+                    // Tetrominio T Rotacion 1
+                    let bloque1_prohibido_para_tetrominio_T_R1 = boardArray[(posicionActual_en_tablero+1)].classList.contains('bloque_bloqueado');
+
+                    if ( (arrayARotar === tetrominiosArray[6][0])  ){
+                        
+                        if(bloque1_prohibido_para_tetrominio_T_R1){
+                            pasaYRota = false;
+                        }
+
+                    }
+
+                    // Tetrominio T Rotacion 2
+                    let bloque1_prohibido_para_tetrominio_T_R2 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH+2)].classList.contains('bloque_bloqueado');
+
+                    if ( (arrayARotar === tetrominiosArray[6][1]) ){
+                        
+                        if(bloque1_prohibido_para_tetrominio_T_R2){
+                            pasaYRota = false;
+                        }
+
+                    }
+
+                    // Tetrominio T Rotacion 3
+                    let bloque1_prohibido_para_tetrominio_T_R3 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH*2+1)].classList.contains('bloque_bloqueado');
+
+                    if ( (arrayARotar === tetrominiosArray[6][2]) ){
+                        
+                        if(bloque1_prohibido_para_tetrominio_T_R3){
+                            pasaYRota = false;
+                        }
+
+                    }
+
+                    // Tetrominio T Rotacion 4
+                    let bloque1_prohibido_para_tetrominio_T_R4 = boardArray[(posicionActual_en_tablero)+(BOARD_WIDTH)].classList.contains('bloque_bloqueado');
+
+                    if ( (arrayARotar === tetrominiosArray[6][3]) ){
+                        
+                        if(bloque1_prohibido_para_tetrominio_T_R4){
+                            pasaYRota = false;
+                        }
+
+                    }    
+
+
+        if (pasaYRota){
+
+                    undraw();
+                    
+                    rotacionActualTetrominio++;// aqui eligo la siguiente forma del array de tetrominios
+
+                    if(rotacionActualTetrominio === 4){ //si la rotacion llega a 4, vuelve a 0
+                        rotacionActualTetrominio = 0;
+                    }
+
+                    forma_del_tetrominio_elegido = tetrominiosArray[random][rotacionActualTetrominio];
+                    
+                    draw();
+
+            }
     }
     
     
@@ -640,8 +918,9 @@ function preventDefaultForScrollKeys(e) {
     
                 boardArray.forEach(index => classBigBoard.appendChild(index));
     
-                // const audioLine = new Audio("./music/samples_line.mp3");
-                // audioLine.play();
+                const audioLine = new Audio("./music/samples_line.mp3");
+                audioLine.play();
+                audioLineLine.volume = 0.2;
             }
         }
     
@@ -687,10 +966,6 @@ function isGameOver() {
 
         botonRepetir.addEventListener('click', () => {
 
-
-            // cuadrados.forEach(c => c.classList.remove('tetrominio'));
-            // cuadrados.forEach(d => d.classList.remove('bloque_bloqueado'));
-            // aqui hay que poner otra vez el bloque final
             time = setInterval(moveDown, 1000);
 
             gameover.className = "gameover__off";
@@ -707,11 +982,12 @@ function isGameOver() {
 
         botonRepetir.appendChild(tryAgain);
         
-        // document.body.appendChild(gameover);
         classVentanaGameOver.appendChild(gameover);
-        // const audioGameOver = new Audio("./music/samples_gameover.mp3");
-        // audioGameOver.play(); //  Audio game over.
-        // tetrisMusic.pause();
+        const audioGameOver = new Audio("./music/samples_gameover.mp3");
+        audioGameOver.play(); //  Audio game over.
+        audioGameOver.volume = 0.1;
+        tetrisMusic.pause();
+        
 
     }
 }
