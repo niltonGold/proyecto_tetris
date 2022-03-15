@@ -900,27 +900,17 @@ function preventDefaultForScrollKeys(e) {
     let score = 0;
 
     function addScore() {
+        
         for (let i = 0; i < 199; i += BOARD_WIDTH) {
 
 
-            
-
-            const columna = [i, i + 1, i + 2, i + 3, i + 4, i + 5, i + 6, i + 7, i + 8, i + 9];
+                const columna = [i, i + 1, i + 2, i + 3, i + 4, i + 5, i + 6, i + 7, i + 8, i + 9];
 
 
-    
-
-
-            
-
-                        if (columna.every(index => boardArray[index].classList.contains('bloque_bloqueado'))) {
-                            score += 50;
-                            scoreDisplay.innerHTML = score;
-                
-
-
-
-
+                if ( columna.every(index => boardArray[index].classList.contains('bloque_bloqueado')) ) {
+                    score += 50;
+                    scoreDisplay.innerHTML = score;
+        
 
 
                             columna.forEach(index => {
@@ -929,61 +919,20 @@ function preventDefaultForScrollKeys(e) {
 
                             });
 
+                    undraw();
 
-                           
+                    cuadradosRemovidos = boardArray.splice(i, BOARD_WIDTH);
 
-
-                            // if ( ( (i+BOARD_WIDTH) < 199 )  && (  columna.every(index => boardArray[index+BOARD_WIDTH].classList.contains('bloque_bloqueado'))  )  ) {
-
-                            //         columna.forEach(index => {
-                            //                         boardArray[index + BOARD_WIDTH ].classList.remove('bloque_bloqueado');
-                            //                         boardArray[index + BOARD_WIDTH].classList.remove('tetrominioBlock');
-            
-                            //            });
-                            // }
-
-
-                            // if ( ( (i+(BOARD_WIDTH*2)) < 199 )  && (  columna.every(index => boardArray[index+(BOARD_WIDTH*2)].classList.contains('bloque_bloqueado'))  )  ) {
-
-                            //     columna.forEach(index => {
-                            //                     boardArray[index + (BOARD_WIDTH*2) ].classList.remove('bloque_bloqueado');
-                            //                     boardArray[index + (BOARD_WIDTH*2)].classList.remove('tetrominioBlock');
+                    boardArray = cuadradosRemovidos.concat(boardArray);
         
-                            //             });
-                            // }
-
-
-                            // if ( ( (i+(BOARD_WIDTH*3)) < 199 )  && (  columna.every(index => boardArray[index+(BOARD_WIDTH*3)].classList.contains('bloque_bloqueado'))  )  ) {
-
-                            //     columna.forEach(index => {
-                            //                     boardArray[index + (BOARD_WIDTH*3) ].classList.remove('bloque_bloqueado');
-                            //                     boardArray[index + (BOARD_WIDTH*3)].classList.remove('tetrominioBlock');
-        
-                            //             });
-                            // }
-
-
-
-
-
-                            undraw();
+                    boardArray.forEach(index => classBigBoard.appendChild(index));
                 
+                    const audioLine = new Audio("./music/samples_line.mp3");
+                    audioLine.play();
+                    audioLineLine.volume = 0.2;
 
-                            const cuadradosRemovidos = boardArray.splice(i, BOARD_WIDTH);
+                    }
 
-                            boardArray = cuadradosRemovidos.concat(boardArray);
-                
-                            boardArray.forEach(index => classBigBoard.appendChild(index));
-
-                
-                            const audioLine = new Audio("./music/samples_line.mp3");
-                            audioLine.play();
-                            audioLineLine.volume = 0.2;
-                        }
-                       
-
-                     
-            
 
         }
     
