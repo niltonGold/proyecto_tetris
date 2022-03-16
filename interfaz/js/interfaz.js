@@ -894,6 +894,16 @@ function preventDefaultForScrollKeys(e) {
 
 
 
+    function audioLineaBorrada(){
+                            const audioLine = new Audio("./music/samples_line.mp3");
+                    audioLine.play();
+                    audioLine.volume = 0.2;
+    }
+
+    let lineaBorrada = false;
+
+
+
 // SCORE DEL JUEGO
     // variables del score
     let scoreDisplay = document.querySelector('.score_puntuacion-number');
@@ -903,43 +913,44 @@ function preventDefaultForScrollKeys(e) {
         
         for (let i = 0; i < 199; i += BOARD_WIDTH) {
 
-
                 const columna = [i, i + 1, i + 2, i + 3, i + 4, i + 5, i + 6, i + 7, i + 8, i + 9];
 
-
                 if ( columna.every(index => boardArray[index].classList.contains('bloque_bloqueado')) ) {
+                    lineaBorrada = true;
+                    console.log(lineaBorrada);
                     score += 50;
                     scoreDisplay.innerHTML = score;
-        
-
-
+                    
                             columna.forEach(index => {
                                         boardArray[index  ].classList.remove('bloque_bloqueado');
                                         boardArray[index ].classList.remove('tetrominioBlock');
 
                             });
-
+      
                     undraw();
-
-                    cuadradosRemovidos = boardArray.splice(i, BOARD_WIDTH);
+                    
+                    let cuadradosRemovidos = boardArray.splice(i, BOARD_WIDTH);
 
                     boardArray = cuadradosRemovidos.concat(boardArray);
         
                     boardArray.forEach(index => classBigBoard.appendChild(index));
-                
-                    const audioLine = new Audio("./music/samples_line.mp3");
-                    audioLine.play();
-                    audioLineLine.volume = 0.2;
 
-                    }
-
+                }
 
         }
-    
+
+                if ( lineaBorrada ){
+                    audioLineaBorrada();
+                    lineaBorrada = false
+                }
+        
     }
+ 
+
+  
 
 
-    // funcion para cuando se pierde la partida
+// funcion para cuando se pierde la partida
 function isGameOver() {
      if (  (posicionActual_en_tablero >= 10) && (posicionActual_en_tablero <= 19) && (posicionActual_en_tablero > BOARD_WIDTH) || (posicionActual_en_tablero < BOARD_WIDTH) ) {
         
