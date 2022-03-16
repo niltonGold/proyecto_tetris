@@ -903,7 +903,6 @@ function preventDefaultForScrollKeys(e) {
     let lineaBorrada = false;
 
 
-
 // SCORE DEL JUEGO
     // variables del score
     let scoreDisplay = document.querySelector('.score_puntuacion-number');
