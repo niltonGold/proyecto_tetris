@@ -1,2 +1,1 @@
-# proyecto_tetris
-v7
+
