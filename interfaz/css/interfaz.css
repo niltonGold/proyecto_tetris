@@ -1,0 +1,204 @@
+* {
+    padding: 0%;
+    margin: 0%;
+}
+
+
+
+@font-face {
+    font-family: "Pokemon-GB";
+    src: url(/font/Pokemon-GB.ttf);
+}
+
+body{
+    background-color: #C6CFA2;
+    font-family: "Pokemon-GB";
+}
+
+/* Imagen de la cabecera de la pagina */
+.container__img{
+    text-align: center;
+}
+    .img__tetris-title{
+        width: 300px;
+    }
+
+
+/* Contenerdor de los tableros, Grande y Pequeño */
+.container__bigBoard-smallBoard{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+}    
+    
+        /* Tablero Pequeño */
+        .smallBoard{
+            width: 170px;
+            height: 340px;
+            border: 1px solid black;
+        }
+
+        .contenedor_score-cuadrados{
+            /* background-color: beige; */
+            display: flex;
+            justify-content: center;
+            justify-items: center;
+        }
+
+                .score-cuadrados-tetrominios{
+                    border: 1px solid black;
+                    padding: 1px;
+                    display: grid;
+                    grid-template-columns: repeat(4, 30px);
+                    grid-template-rows: repeat(4, 30px);
+                }
+
+
+        /* Tablero Grande */
+        .bigBoard{
+            width: 300px;
+            height: 600px;
+            border: 1px solid black;
+            display: grid;
+            padding: 2px;
+            grid-template-columns: repeat(10, 30px);
+            grid-template-rows: repeat(20, 30px);
+
+        }
+
+        /* Ultima linea del tablero invisible */
+        .final_line{
+            visibility: hidden;
+        }
+
+/* Estilo y colores del los bloques del tablero grande y el pequeño*/
+.bloque__contenedor, .bloque__contenedor_mini{
+    display: flex;
+    opacity: 0.2;
+    margin: 2px;
+    border: 5px solid black;
+    padding: 3px;  
+}
+
+        .bloque__contenedor-interno, .bloque__contenedor-interno_mini{
+            align-self: center;
+            justify-self: center;
+            background-color: black;
+            width: 10px;
+            height: 10px;   
+        }
+    
+
+/* Estilo de los bloques con tetrominios */
+.tetrominioBlock{
+    opacity: 0.8;
+}
+
+
+/* Estilo del tablero pequeño */
+.smallBoard{
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+}
+        .score_title{
+            text-align: center;
+            /* background-color: aliceblue; */
+            padding: 1rem 1rem 0.5rem 1rem;
+        }
+
+        .contenedor_score-puntuacion{
+            /* background-color: azure; */
+            display: flex;
+            justify-content: center;
+        }
+                .score_puntuacion-number{
+                    border: 1px solid black;
+                    height: 30px;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    width: 123px;
+                    /* background-color: aqua; */
+                    margin: 0rem 0rem 1rem 0rem;
+                }
+
+        .contenedor_score-move{
+            display: flex;
+            flex-direction: row;
+            /* background-color:antiquewhite; */
+            justify-content: center;
+            gap: 0.7rem;
+            margin-top: 1rem;
+            margin-bottom: 0.4rem;
+        }        
+                .contenedor_score-flechas{
+                    font-size: 15px;
+                }
+        
+        .contenedor_score-rotate{
+            display: flex;
+            flex-direction: row;
+            /* background-color:rgb(197, 133, 50); */
+            justify-content: center;
+            gap: 0.7rem;
+            align-items: center;
+        }        
+                
+  
+/* Estilo del cuadro de gameOver */
+.ventana_gameover{
+    position: absolute;
+    top: 70%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+}
+
+        .contenedor__gameover {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+            width: 280px;
+            height: 250px;
+            color: #000000;
+            background-color: #C6CFA2;
+            -webkit-box-shadow: 0px 0px 0px 4px #868D6B, 0px 0px 0px 6px #ACB48B, 0px 0px 0px 9px #424245, 0px 0px 0px 9px #424245, inset 0px 0px 0px 4px #3f4638; 
+            box-shadow: 0px 0px 0px 4px #868D6B, 0px 0px 0px 6px #ACB48B, 0px 0px 0px 9px #424245, 0px 0px 0px 9px #424245, inset 0px 0px 0px 4px #3f4638;
+            z-index: 1;
+
+        }
+        
+        
+.opaco{
+    opacity: 0.5;
+}
+
+
+
+/* Estilo del boton on off */
+.button_on-off-container{
+    /* background-color: bisque; */
+    font-family: "Pokemon-GB";
+    text-align: center;
+}
+    .botonAudio__style{
+        width: 120px;
+        margin: 1rem;
+        padding: 0.3rem;
+        background-color: #a5ae82;
+    }
+    .botonAudio__style:hover{
+        background: #4d523b;
+        cursor: pointer;
+    }
+    
+
+        .texto_on-off-boton{
+            font-family: "Pokemon-GB";
+            font-size: medium;
+        }
